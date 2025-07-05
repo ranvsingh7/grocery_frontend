@@ -80,12 +80,14 @@ const Invoice = React.forwardRef<HTMLDivElement, InvoiceProps>(({ store, user, o
       <div style={{ textAlign: 'right', marginBottom: 4 }}>
         <div>Subtotal: ₹{order.items.reduce((sum, item) => sum + item.price * item.quantity, 0)}</div>
         {order.handlingCharge !== undefined && order.handlingCharge > 0 && (
-          <div>Handling Charge: ₹{order.handlingCharge}</div>
+          <div className="text-sm font-semibold">Handling Charge: ₹{order.handlingCharge}</div>
         )}
         {order.deliveryCharge !== undefined &&  (
-          <div>Delivery Charge: ₹{order.deliveryCharge}</div>
+          <div className="text-sm font-semibold">Delivery Charge: ₹{order.deliveryCharge}</div>
         )}
-        <div style={{ fontWeight: 600, fontSize: 16 }}>Total: ₹{order.totalAmount}</div>
+        <hr className="my-4"/>
+        <div style={{ fontWeight: 700, fontSize: 20 }}>Total: ₹{order.totalAmount}</div>
+        <hr className="my-4"/>
       </div>
       <div style={{ marginTop: 16, fontSize: 13 }}>
         <strong>Payment Mode:</strong> {order.paymentMode} <br />
