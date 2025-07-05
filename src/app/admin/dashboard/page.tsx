@@ -40,7 +40,7 @@ const STATUS_COLORS: Record<string, string> = {
 
 const SOCKET_URL = process.env.NODE_ENV === "development"
   ? "http://localhost:5001"
-  : "https://your-production-backend-url";
+  : "https://grocery-backend-d5ju.onrender.com";
 
 const DashboardPage: React.FC = () => {
   const [orders, setOrders] = useState<Order[]>([]);
