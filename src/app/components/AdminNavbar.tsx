@@ -24,7 +24,7 @@ const AdminNavbar: React.FC = () => {
       <div className="container mx-auto flex justify-between items-center">
         {/* Logo */}
         <div className="text-2xl font-bold text-blue-400">
-          <Link href="/admin">Admin Dashboard</Link>
+          <Link href="/admin/dashboard">Admin Dashboard</Link>
         </div>
 
         {/* Hamburger Icon for Mobile */}
