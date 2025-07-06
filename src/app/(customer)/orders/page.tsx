@@ -158,7 +158,7 @@ console.log("Orders fetched:", orders);
   return (
     <div className="min-h-screen bg-[#f6f7fa] flex">
       {/* Sidebar removed as per user request */}
-      <main className="flex-1 flex flex-col items-center py-10 relative">
+      <main className="flex-1 flex flex-col items-center p-4 relative">
         {/* Back button at top left */}
           <button
             className="absolute top-0 left-0 bg-gray-300 hover:bg-gray-400 rounded-full p-2 cursor-pointer border border-gray-400 shadow mt-2 ml-2 z-10"
@@ -193,7 +193,7 @@ console.log("Orders fetched:", orders);
                           return (
                             <div
                               key={order._id}
-                              className={`bg-white rounded-2xl shadow-md px-6 py-5 flex flex-col gap-2 border ${isDelivered ? 'border-green-100' : isCancelled ? 'border-red-100' : 'border-gray-100'} cursor-pointer`}
+                              className={`bg-white rounded-2xl max-[420px]:w-[90vw] shadow-md px-6 py-5 flex flex-col gap-2 border ${isDelivered ? 'border-green-100' : isCancelled ? 'border-red-100' : 'border-gray-100'} cursor-pointer`}
                               onClick={() => setSelectedOrder(order)}
                             >
                               <div className="flex items-center justify-between">
@@ -212,7 +212,7 @@ console.log("Orders fetched:", orders);
                                 </div>
                                 <ArrowForwardIosIcon className="!text-gray-400" />
                               </div>
-                              <div className="flex items-center gap-2 mt-2 overflow-x-auto">
+                              <div className="flex items-center flex-wrap gap-2 mt-2 overflow-x-auto">
                                 {order.items.slice(0, 5).map((item, idx) => (
                                   <div key={idx} className="w-16 h-16 bg-gray-50 rounded-lg flex items-center justify-center border border-gray-100 overflow-hidden">
                                     {item.productImage ? (

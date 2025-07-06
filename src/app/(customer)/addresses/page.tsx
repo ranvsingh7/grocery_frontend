@@ -172,7 +172,7 @@ const AddressesPage: React.FC = () => {
   return (
     <>
       <div className="max-w-xl mx-auto bg-white rounded-2xl shadow-lg p-8 mt-8 relative">
-        <div className="flex items-center justify-between mb-6">
+        <div className="flex flex-col items-start gap-5 min-[450px]:flex-row items-center justify-between mb-6">
           {/* Go Back Button Top Left, now inside header row for correct stacking */}
           <div className="flex items-center gap-2">
             <button
@@ -188,7 +188,7 @@ const AddressesPage: React.FC = () => {
             <h1 className="text-2xl font-bold text-gray-900">My Addresses</h1>
           </div>
           <button
-            className="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold cursor-pointer"
+            className="bg-green-600 w-full min-[450]:w-max hover:bg-green-700 text-white px-4 py-2 rounded-lg font-semibold cursor-pointer"
             onClick={() => {
               setShowModal(true);
               setForm({
@@ -242,22 +242,31 @@ const AddressesPage: React.FC = () => {
       {showModal && (
         <Dialog open={showModal} onClose={() => { setShowModal(false); setEditingId(null); }} maxWidth="md" fullWidth>
           <DialogTitle sx={{ fontWeight: 'bold', fontSize: 22 }}>{editingId ? 'Edit Address' : 'Add New Address'}</DialogTitle>
-          <DialogContent sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, p: 2 }}>
-            {/* Map Section */}
+          <DialogContent
+            sx={{
+              p: { xs: 1, sm: 2 },
+              display: 'flex',
+              flexDirection: { xs: 'column', md: 'row' },
+              gap: { xs: 2, md: 3 },
+              alignItems: { xs: 'stretch', md: 'flex-start' },
+            }}
+          >
             <Box
               sx={{
-                width: '100%',
+                width: { xs: '100%', md: 400 },
                 maxWidth: { xs: '100%', md: 400 },
-                height: { xs: 280, md: 320 },
-                minHeight: 200,
-                mb: { xs: 1, md: 0 },
+                height: { xs: 380, sm: 400, md: 420 },
+                minHeight: 220,
+                mb: { xs: 2, md: 0 },
                 borderRadius: 2,
                 overflow: 'hidden',
                 alignSelf: { xs: 'center', md: 'flex-start' },
+                boxShadow: { xs: 1, md: 0 },
+                background: '#f8fafc',
               }}
             >
-              <Button variant="outlined" sx={{ mt: 1, borderRadius: 2, mb: 2, color: '#16a34a', borderColor: '#22c55e', fontWeight: 'bold', width: '100%', cursor: 'pointer' }} onClick={() => navigator.geolocation.getCurrentPosition(pos => setForm(addr => ({ ...addr, location: { lat: pos.coords.latitude, lng: pos.coords.longitude } })))}>
-                Go to current location
+              <Button variant="outlined" sx={{ mt: 1, borderRadius: 2, mb: 2, color: '#16a34a', borderColor: '#22c55e', fontWeight: 'bold', width: '100%', cursor: 'pointer', fontSize: { xs: 15, sm: 16 } }} onClick={() => navigator.geolocation.getCurrentPosition(pos => setForm(addr => ({ ...addr, location: { lat: pos.coords.latitude, lng: pos.coords.longitude } })))}>
+                GO TO CURRENT LOCATION
               </Button>
               {isLoaded && typeof window !== 'undefined' && (
                 <GoogleMap
@@ -282,25 +291,24 @@ const AddressesPage: React.FC = () => {
                 </GoogleMap>
               )}
             </Box>
-            {/* Form Section */}
-            <Box sx={{ flex: 1, minWidth: 320 }}>
-              <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
+            <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+              <Box sx={{ display: 'flex', gap: 1, mb: 2, justifyContent: { xs: 'center', md: 'flex-start' } }}>
                 {['Home', 'Work', 'Other'].map(type => (
-                  <Button key={type} variant={form.label === type ? 'contained' : 'outlined'} sx={{ borderRadius: 2, fontWeight: 'bold', background: form.label === type ? '#22c55e' : '#fff', color: form.label === type ? '#fff' : '#222', borderColor: '#22c55e' }} onClick={() => setForm(addr => ({ ...addr, label: type }))}>{type}</Button>
+                  <Button key={type} variant={form.label === type ? 'contained' : 'outlined'} sx={{ borderRadius: 2, fontWeight: 'bold', background: form.label === type ? '#22c55e' : '#fff', color: form.label === type ? '#fff' : '#222', borderColor: '#22c55e', minWidth: 90, fontSize: { xs: 14, sm: 16 } }} onClick={() => setForm(addr => ({ ...addr, label: type }))}>{type.toUpperCase()}</Button>
                 ))}
               </Box>
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>Flat / House no / Building name</Typography>
-              <input value={form.street || ''} onChange={e => setForm(addr => ({ ...addr, street: e.target.value }))} required style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>City</Typography>
-              <input value={form.city || ''} onChange={e => setForm(addr => ({ ...addr, city: e.target.value }))} required style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>State</Typography>
-              <input value={form.state || ''} onChange={e => setForm(addr => ({ ...addr, state: e.target.value }))} required style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>Pincode</Typography>
-              <input value={form.pincode || ''} onChange={e => setForm(addr => ({ ...addr, pincode: e.target.value }))} required style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>Country</Typography>
-              <input value={form.country || 'India'} onChange={e => setForm(addr => ({ ...addr, country: e.target.value }))} style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
-              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600 }}>Landmark (optional)</Typography>
-              <input value={form.landmark || ''} onChange={e => setForm(addr => ({ ...addr, landmark: e.target.value }))} style={{ width: '100%', marginBottom: 16, padding: 12, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 16 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>Flat / House no / Building name</Typography>
+              <input value={form.street || ''} onChange={e => setForm(addr => ({ ...addr, street: e.target.value }))} required style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>City</Typography>
+              <input value={form.city || ''} onChange={e => setForm(addr => ({ ...addr, city: e.target.value }))} required style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>State</Typography>
+              <input value={form.state || ''} onChange={e => setForm(addr => ({ ...addr, state: e.target.value }))} required style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>Pincode</Typography>
+              <input value={form.pincode || ''} onChange={e => setForm(addr => ({ ...addr, pincode: e.target.value }))} required style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>Country</Typography>
+              <input value={form.country || 'India'} onChange={e => setForm(addr => ({ ...addr, country: e.target.value }))} style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
+              <Typography variant="subtitle2" sx={{ mb: 0.5, color: '#374151', fontWeight: 600, fontSize: { xs: 13, sm: 15 } }}>Landmark (optional)</Typography>
+              <input value={form.landmark || ''} onChange={e => setForm(addr => ({ ...addr, landmark: e.target.value }))} style={{ width: '100%', marginBottom: 12, padding: 10, borderRadius: 8, border: '1px solid #d1d5db', fontSize: 15 }} />
             </Box>
           </DialogContent>
           <Box sx={{ display: 'flex', justifyContent: 'flex-end', gap: 2, p: 2 }}>

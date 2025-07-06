@@ -757,8 +757,24 @@ const CustomerDashboard: React.FC = () => {
           )}
         </>
       )}
-      <Drawer anchor="right" open={cartOpen} onClose={() => setCartOpen(false)} PaperProps={{ sx: { width: { xs: '100%', sm: 400, md: 480, lg: 520 }, p: 2, background: '#f8fafc' } }}>
-        <Box sx={{ p: 2, height: '100%', display: 'flex', flexDirection: 'column' }}>
+      <Drawer
+        anchor="right"
+        open={cartOpen}
+        onClose={() => setCartOpen(false)}
+        PaperProps={{
+          sx: {
+            width: { xs: '100vw', sm: 400, md: 480, lg: 520 },
+            maxWidth: '100vw',
+            // p: { xs: 1, sm: 2 },
+            background: '#f8fafc',
+            borderTopLeftRadius: { xs: 16, sm: 0 },
+            borderBottomLeftRadius: { xs: 16, sm: 0 },
+            minHeight: '100vh',
+            boxSizing: 'border-box',
+          }
+        }}
+      >
+        <Box sx={{ p: { xs: 1, sm: 2 }, height: '100%', display: 'flex', flexDirection: 'column', minHeight: '100vh', boxSizing: 'border-box' }}>
           {/* Step 1: Cart, Step 2: Address selection */}
           {addressDialogOpen ? (
             <>
@@ -805,12 +821,12 @@ const CustomerDashboard: React.FC = () => {
             </>
           ) : (
             <>
-              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: 2 }}>
-                <Typography variant="h6" sx={{ fontWeight: 'bold' }}>My Cart</Typography>
+              <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', mb: { xs: 0, sm: 2 } }}>
+                <Typography variant="h6" sx={{ fontWeight: 'bold', fontSize: { xs: 20, sm: 24 } }}>My Cart</Typography>
                 <IconButton
                   aria-label="Close cart"
                   onClick={() => setCartOpen(false)}
-                  sx={{ color: '#6b7280', ml: 1 }}
+                  sx={{ color: '#6b7280', ml: 1, p: { xs: 0.5, sm: 1 } }}
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="28" height="28">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -818,103 +834,97 @@ const CustomerDashboard: React.FC = () => {
                 </IconButton>
               </Box>
               {cartItemsArr.length === 0 ? (
-                <Typography>Your cart is empty.</Typography>
+                <Typography sx={{ textAlign: 'center', mt: 4, fontSize: { xs: 16, sm: 18 } }}>Your cart is empty.</Typography>
               ) : (
                 <>
-                  <Box sx={{ flex: 1, overflowY: 'auto', mb: 2 }}>
+                  <Box sx={{ flex: 1, overflowY: 'auto', mb: { xs: 1, sm: 2 }, maxHeight: { xs: '60vh', sm: '70vh' } }}>
                     {cartItemsArr.map(({ product, quantity }) => (
-                      <Box key={product._id} sx={{ position: 'relative', display: 'flex', alignItems: 'center', gap: 2, mb: 2, p: 1, borderRadius: 2, background: '#fff', boxShadow: 1, minHeight: 80 }}>
-                        {/* Cross icon for remove at top-right, inside card, small and simple */}
+                      <Box key={product._id} sx={{ position: 'relative', display: 'flex', alignItems: 'center', gap: { xs: 1, sm: 2 }, mb: { xs: 1, sm: 2 }, p: { xs: 0.5, sm: 1 }, borderRadius: 2, background: '#fff', boxShadow: 1, minHeight: 70 }}>
                         <IconButton
                           size="small"
                           onClick={() => setCart(prevCart => { const { [product._id]: _unused, ...rest } = prevCart; return rest; })}
-                          sx={{ position: 'absolute', top: 8, right: 8, zIndex: 2, color: '#b0b0b0', background: 'transparent', p: 0.5, '&:hover': { color: '#ef4444', background: 'transparent' }, cursor: 'pointer' }}
+                          sx={{ position: 'absolute', top: 6, right: 6, zIndex: 2, color: '#b0b0b0', background: 'transparent', p: 0.5, '&:hover': { color: '#ef4444', background: 'transparent' }, cursor: 'pointer' }}
                           aria-label="Remove from cart"
                         >
                           <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20" stroke="currentColor" width="18" height="18">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l8 8M6 14L14 6" />
                           </svg>
                         </IconButton>
-                        {/* <img
-                          // src={product.image || '/groceryLogo.jpg'}
-                          src="https://storage.googleapis.com/grocery_image/about-pic.png"
-                          alt={product.name}
-                          style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 8 }}
-                          onError={e => (e.currentTarget.src = '/groceryLogo.jpg')}
-                        /> */}
                         <Image
                           src={product.image || '/groceryLogo.jpg'}
                           alt={product.name}
-                          width={56}
-                          height={56}
+                          width={48}
+                          height={48}
                           unoptimized
-                          style={{ width: 56, height: 56, objectFit: 'cover', borderRadius: 8 }}
+                          style={{ width: 48, height: 48, objectFit: 'cover', borderRadius: 8 }}
                           onError={(e) => (e.currentTarget.src = '/groceryLogo.jpg')}
                         />
                         <Box sx={{ flex: 1, minWidth: 0 }}>
-                          <Typography fontWeight={600} sx={{ whiteSpace: 'normal', wordBreak: 'break-word', fontSize: 18, lineHeight: 1.2 }}>{product.name}</Typography>
+                          <Typography fontWeight={600} sx={{ whiteSpace: 'normal', wordBreak: 'break-word', fontSize: { xs: 15, sm: 18 }, lineHeight: 1.2 }}>{product.name}</Typography>
                           {product.description && (
-                            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'normal', wordBreak: 'break-word', fontSize: 14, lineHeight: 1.2 }}>{product.description}</Typography>
+                            <Typography variant="body2" color="text.secondary" sx={{ whiteSpace: 'normal', wordBreak: 'break-word', fontSize: { xs: 12, sm: 14 }, lineHeight: 1.2 }}>{product.description}</Typography>
                           )}
-                          <Typography variant="body2" color="text.secondary">Price: ₹{product.price.toFixed(2)}</Typography>
+                          <Typography variant="body2" color="text.secondary" sx={{ fontSize: { xs: 12, sm: 14 } }}>Price: ₹{product.price.toFixed(2)}</Typography>
                         </Box>
-                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                          <Button variant="contained" size="small" sx={{ minWidth: 0, background: '#f472b6', color: '#fff', fontWeight: 'bold', '&:hover': { background: '#ec4899' } }} onClick={() => handleDecrement(product._id)}>-</Button>
-                          <Typography sx={{ mx: 1, fontWeight: 600 }}>{quantity}</Typography>
-                          <Button variant="contained" size="small" sx={{ minWidth: 0, background: '#f472b6', color: '#fff', fontWeight: 'bold', '&:hover': { background: '#ec4899' } }} onClick={() => handleIncrement(product._id)}>+</Button>
+                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5 }}>
+                          <Button variant="contained" size="small" sx={{ minWidth: 0, width: 28, height: 28, background: '#f472b6', color: '#fff', fontWeight: 'bold', fontSize: 18, p: 0, '&:hover': { background: '#ec4899' } }} onClick={() => handleDecrement(product._id)}>-</Button>
+                          <Typography sx={{ mx: 0.5, fontWeight: 600, fontSize: { xs: 15, sm: 16 } }}>{quantity}</Typography>
+                          <Button variant="contained" size="small" sx={{ minWidth: 0, width: 28, height: 28, background: '#f472b6', color: '#fff', fontWeight: 'bold', fontSize: 18, p: 0, '&:hover': { background: '#ec4899' } }} onClick={() => handleIncrement(product._id)}>+</Button>
                         </Box>
-                        <Typography fontWeight={700} color="primary.main" sx={{ minWidth: 70, textAlign: 'right', wordBreak: 'break-word' }}>₹{(product.price * quantity).toFixed(2)}</Typography>
+                        <Typography fontWeight={700} color="primary.main" sx={{ minWidth: 55, textAlign: 'right', wordBreak: 'break-word', fontSize: { xs: 14, sm: 16 } }}>₹{(product.price * quantity).toFixed(2)}</Typography>
                       </Box>
                     ))}
                   </Box>
-                  <Divider sx={{ my: 2 }} />
-                  <Box sx={{ mb: 2 }}>
-                    <Typography fontWeight={600}>Bill details</Typography>
+                  <Divider sx={{ my: { xs: 1, sm: 2 } }} />
+                  <Box sx={{ mb: { xs: 1, sm: 2 } }}>
+                    <Typography fontWeight={600} sx={{ fontSize: { xs: 15, sm: 16 } }}>Bill details</Typography>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                      <Typography color="text.secondary">Items total</Typography>
-                      <Typography>₹{cartTotal.toFixed(2)}</Typography>
+                      <Typography color="text.secondary" sx={{ fontSize: { xs: 13, sm: 14 } }}>Items total</Typography>
+                      <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>₹{cartTotal.toFixed(2)}</Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                      <Typography color="text.secondary">Delivery charge</Typography>
-                      <Typography className={`${cartTotal > 599 && 'text-green-600'}`}>
+                      <Typography color="text.secondary" sx={{ fontSize: { xs: 13, sm: 14 } }}>Delivery charge</Typography>
+                      <Typography className={`${cartTotal > 599 && 'text-green-600'}`} sx={{ fontSize: { xs: 13, sm: 14 } }}>
                         {cartTotal < 599 ? `₹20` : "Free"}
                         {cartTotal < 599 && <span className="text-xs text-gray-500"> (Free above ₹599)</span>}
                       </Typography>
                     </Box>
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                      <Typography color="text.secondary">Handling charge</Typography>
-                      <Typography>₹4</Typography>
+                      <Typography color="text.secondary" sx={{ fontSize: { xs: 13, sm: 14 } }}>Handling charge</Typography>
+                      <Typography sx={{ fontSize: { xs: 13, sm: 14 } }}>₹4</Typography>
                     </Box>
                     <Divider sx={{ my: 1 }} />
                     <Box sx={{ display: 'flex', justifyContent: 'space-between', fontWeight: 700 }}>
-                      <Typography>Grand total</Typography>
-                      <Typography>₹{(cartTotal + (cartTotal < 599 ? 20 : 0) + 4).toFixed(2)}</Typography>
+                      <Typography sx={{ fontSize: { xs: 15, sm: 16 } }}>Grand total</Typography>
+                      <Typography sx={{ fontSize: { xs: 15, sm: 16 } }}>₹{(cartTotal + (cartTotal < 599 ? 20 : 0) + 4).toFixed(2)}</Typography>
                     </Box>
                   </Box>
-                  {selectedAddressIdx == null ? (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      fullWidth
-                      sx={{ fontWeight: 'bold', fontSize: 18, py: 1.5, borderRadius: 2, mb: 2, cursor: 'pointer' }}
-                      onClick={() => { fetchAddresses(); setAddressDialogOpen(true); }}
-                      disabled={placingOrder}
-                    >
-                      Select Delivery Address
-                    </Button>
-                  ) : (
-                    <Button
-                      variant="contained"
-                      color="success"
-                      fullWidth
-                      sx={{ fontWeight: 'bold', fontSize: 18, py: 1.5, borderRadius: 2, mb: 2, cursor: 'pointer' }}
-                      onClick={handlePlaceOrderAfterAddress}
-                      disabled={placingOrder}
-                    >
-                      {placingOrder ? 'Placing Order...' : 'Place Order'}
-                    </Button>
-                  )}
-                  {orderMsg && <Typography sx={{ color: (orderMsg && orderMsg.includes('success')) ? '#10b981' : '#f44336', fontWeight: 'bold', mt: 2 }}>{orderMsg}</Typography>}
+                  <Box sx={{ position: 'sticky', bottom: 0, left: 0, right: 0, zIndex: 10, background: '#f8fafc', pt: 1 }}>
+                    {selectedAddressIdx == null ? (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        fullWidth
+                        sx={{ fontWeight: 'bold', fontSize: { xs: 16, sm: 18 }, py: 1.5, borderRadius: 2, mb: { xs: 1, sm: 2 }, cursor: 'pointer', boxShadow: 2 }}
+                        onClick={() => { fetchAddresses(); setAddressDialogOpen(true); }}
+                        disabled={placingOrder}
+                      >
+                        SELECT DELIVERY ADDRESS
+                      </Button>
+                    ) : (
+                      <Button
+                        variant="contained"
+                        color="success"
+                        fullWidth
+                        sx={{ fontWeight: 'bold', fontSize: { xs: 16, sm: 18 }, py: 1.5, borderRadius: 2, mb: { xs: 1, sm: 2 }, cursor: 'pointer', boxShadow: 2 }}
+                        onClick={handlePlaceOrderAfterAddress}
+                        disabled={placingOrder}
+                      >
+                        {placingOrder ? 'Placing Order...' : 'PLACE ORDER'}
+                      </Button>
+                    )}
+                    {orderMsg && <Typography sx={{ color: (orderMsg && orderMsg.includes('success')) ? '#10b981' : '#f44336', fontWeight: 'bold', mt: 1, textAlign: 'center', fontSize: { xs: 14, sm: 16 } }}>{orderMsg}</Typography>}
+                  </Box>
                 </>
               )}
             </>
@@ -923,54 +933,66 @@ const CustomerDashboard: React.FC = () => {
           <Dialog open={addAddressOpen} onClose={() => { setAddAddressOpen(false); setEditAddressId(null); }} maxWidth="md" fullWidth>
             <DialogTitle sx={{ fontWeight: 'bold', fontSize: 22 }}>Enter complete address</DialogTitle>
             <DialogContent sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: 3, p: 2 }}>
-              {/* Map Section */}
               <Box
                 sx={{
+                  display: 'flex',
+                  flexDirection: { xs: 'column', md: 'row' },
+                  gap: 3,
                   width: '100%',
-                  maxWidth: { xs: '100%', md: 400 },
-                  height: { xs: 280, md: 320 },
-                  minHeight: 200,
-                  mb: { xs: 1, md: 0 },
-                  borderRadius: 2,
-                  overflow: 'hidden',
-                  alignSelf: { xs: 'center', md: 'flex-start' },
+                  alignItems: { xs: 'stretch', md: 'flex-start' },
                 }}
               >
-                <Button variant="outlined" sx={{ mt: 1, borderRadius: 2, mb: 2, color: '#16a34a', borderColor: '#22c55e', fontWeight: 'bold', width: '100%', cursor: 'pointer' }} onClick={() => navigator.geolocation.getCurrentPosition(pos => setNewAddress(addr => ({ ...addr, location: { lat: pos.coords.latitude, lng: pos.coords.longitude } })))}>
-                  Go to current location
-                </Button>
-                {isLoaded && (
-                  <GoogleMap
-                    mapContainerStyle={{ width: '100%', height: '100%', borderRadius: 12 }}
-                    center={{ lat: newAddress.location.lat, lng: newAddress.location.lng }}
-                    zoom={15}
-                    onClick={(e: google.maps.MapMouseEvent) => {
-                      const lat = e.latLng?.lat();
-                      const lng = e.latLng?.lng();
-                      if (lat !== undefined && lng !== undefined) {
-                        setNewAddress(addr => ({ ...addr, location: { lat, lng } }));
-                      }
-                    }}
-                    options={{ disableDefaultUI: true }}
-                  >
-                    <Marker position={{ lat: newAddress.location.lat, lng: newAddress.location.lng }} />
-                  </GoogleMap>
-                )}
-              </Box>
-
-              {/* Form Section */}
-              <Box sx={{ flex: 1, minWidth: 320 }}>
-                <Box sx={{ display: 'flex', gap: 1, mb: 2 }}>
-                  {['Home', 'Work', 'Other'].map(type => (
-                    <Button key={type} variant={newAddress.label === type ? 'contained' : 'outlined'} sx={{ borderRadius: 2, fontWeight: 'bold', background: newAddress.label === type ? '#22c55e' : '#fff', color: newAddress.label === type ? '#fff' : '#222', borderColor: '#22c55e' }} onClick={() => setNewAddress(addr => ({ ...addr, label: type }))}>{type}</Button>
-                  ))}
+                {/* Map Section */}
+                <Box
+                  sx={{
+                    width: { xs: '100%', md: 400 },
+                    maxWidth: { xs: '100%', md: 400 },
+                    height: { xs: 220, sm: 260, md: 320 },
+                    minHeight: 180,
+                    mb: { xs: 2, md: 0 },
+                    borderRadius: 2,
+                    overflow: 'hidden',
+                    alignSelf: { xs: 'center', md: 'flex-start' },
+                    boxShadow: { xs: 1, md: 0 },
+                    background: '#f8fafc',
+                  }}
+                >
+                  <Button variant="outlined" sx={{ mt: 1, borderRadius: 2, mb: 2, color: '#16a34a', borderColor: '#22c55e', fontWeight: 'bold', width: '100%', cursor: 'pointer', fontSize: { xs: 15, sm: 16 } }} onClick={() => navigator.geolocation.getCurrentPosition(pos => setNewAddress(addr => ({ ...addr, location: { lat: pos.coords.latitude, lng: pos.coords.longitude } })))}>
+                    GO TO CURRENT LOCATION
+                  </Button>
+                  {isLoaded && (
+                    <GoogleMap
+                      mapContainerStyle={{ width: '100%', height: '100%', borderRadius: 12 }}
+                      center={{ lat: newAddress.location.lat, lng: newAddress.location.lng }}
+                      zoom={15}
+                      onClick={(e: google.maps.MapMouseEvent) => {
+                        const lat = e.latLng?.lat();
+                        const lng = e.latLng?.lng();
+                        if (lat !== undefined && lng !== undefined) {
+                          setNewAddress(addr => ({ ...addr, location: { lat, lng } }));
+                        }
+                      }}
+                      options={{ disableDefaultUI: true }}
+                    >
+                      <Marker position={{ lat: newAddress.location.lat, lng: newAddress.location.lng }} />
+                    </GoogleMap>
+                  )}
                 </Box>
-                <TextField label="Flat / House no / Building name" value={newAddress.street} onChange={e => setNewAddress(addr => ({ ...addr, street: e.target.value }))} fullWidth required sx={{ mb: 2 }} />
-                <TextField label="City" value={newAddress.city} onChange={e => setNewAddress(addr => ({ ...addr, city: e.target.value }))} fullWidth required sx={{ mb: 2 }} />
-                <TextField label="State" value={newAddress.state} onChange={e => setNewAddress(addr => ({ ...addr, state: e.target.value }))} fullWidth required sx={{ mb: 2 }} />
-                <TextField label="Pincode" value={newAddress.pincode} onChange={e => setNewAddress(addr => ({ ...addr, pincode: e.target.value }))} fullWidth required sx={{ mb: 2 }} />
-                <TextField label="Country" disabled value={newAddress.country} onChange={e => setNewAddress(addr => ({ ...addr, country: e.target.value }))} fullWidth sx={{ mb: 2 }} />
-                <TextField label="Landmark (optional)" value={newAddress.landmark} onChange={e => setNewAddress(addr => ({ ...addr, landmark: e.target.value }))} fullWidth sx={{ mb: 2 }} />
+
+                {/* Form Section */}
+                <Box sx={{ flex: 1, minWidth: 0, width: '100%' }}>
+                  <Box sx={{ display: 'flex', gap: 1, mb: 2, justifyContent: { xs: 'center', md: 'flex-start' } }}>
+                    {['Home', 'Work', 'Other'].map(type => (
+                      <Button key={type} variant={newAddress.label === type ? 'contained' : 'outlined'} sx={{ borderRadius: 2, fontWeight: 'bold', background: newAddress.label === type ? '#22c55e' : '#fff', color: newAddress.label === type ? '#fff' : '#222', borderColor: '#22c55e', minWidth: 90, fontSize: { xs: 14, sm: 16 } }} onClick={() => setNewAddress(addr => ({ ...addr, label: type }))}>{type.toUpperCase()}</Button>
+                    ))}
+                  </Box>
+                  <TextField label="Flat / House no / Building name" value={newAddress.street} onChange={e => setNewAddress(addr => ({ ...addr, street: e.target.value }))} fullWidth required sx={{ mb: 2 }} size="small" />
+                  <TextField label="City" value={newAddress.city} onChange={e => setNewAddress(addr => ({ ...addr, city: e.target.value }))} fullWidth required sx={{ mb: 2 }} size="small" />
+                  <TextField label="State" value={newAddress.state} onChange={e => setNewAddress(addr => ({ ...addr, state: e.target.value }))} fullWidth required sx={{ mb: 2 }} size="small" />
+                  <TextField label="Pincode" value={newAddress.pincode} onChange={e => setNewAddress(addr => ({ ...addr, pincode: e.target.value }))} fullWidth required sx={{ mb: 2 }} size="small" />
+                  <TextField label="Country" disabled value={newAddress.country} onChange={e => setNewAddress(addr => ({ ...addr, country: e.target.value }))} fullWidth sx={{ mb: 2 }} size="small" />
+                  <TextField label="Landmark (optional)" value={newAddress.landmark} onChange={e => setNewAddress(addr => ({ ...addr, landmark: e.target.value }))} fullWidth sx={{ mb: 2 }} size="small" />
+                </Box>
               </Box>
             </DialogContent>
             <DialogActions sx={{ p: 2 }}>
